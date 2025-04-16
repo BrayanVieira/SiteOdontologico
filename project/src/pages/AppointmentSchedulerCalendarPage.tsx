@@ -6,7 +6,6 @@ interface AppointmentSchedulerCalendarPageProps {
   onClose?: () => void;
 }
 
-// Month names in Portuguese.
 const monthNames = [
   "Janeiro",
   "Fevereiro",
@@ -22,12 +21,6 @@ const monthNames = [
   "Dezembro",
 ];
 
-/**
- * Helper function to get all days in a given month.
- * @param year - Four-digit year.
- * @param month - Month number (0-indexed, i.e., 0 = January).
- * @returns Array of Date objects for each day in the specified month.
- */
 function getDaysInMonth(year: number, month: number): Date[] {
   const date = new Date(year, month, 1);
   const days: Date[] = [];
@@ -38,19 +31,12 @@ function getDaysInMonth(year: number, month: number): Date[] {
   return days;
 }
 
-/**
- * Generate a calendar grid that pads the first week and last week with null.
- * @param year - Four-digit year.
- * @param month - Month number (0-indexed, i.e., 0 = January).
- * @returns 2D array representing weeks with days (Date objects or null for padding).
- */
 function getCalendarGrid(year: number, month: number): (Date | null)[][] {
   const days = getDaysInMonth(year, month);
-  const firstWeekday = new Date(year, month, 1).getDay(); // 0 (Dom) to 6 (Sáb)
+  const firstWeekday = new Date(year, month, 1).getDay();
   const weeks: (Date | null)[][] = [];
   let week: (Date | null)[] = [];
 
-  // Pad start with null for days before the first day of month
   for (let i = 0; i < firstWeekday; i++) {
     week.push(null);
   }
@@ -63,7 +49,6 @@ function getCalendarGrid(year: number, month: number): (Date | null)[][] {
     }
   });
 
-  // Pad the last week if necessary
   if (week.length > 0) {
     while (week.length < 7) {
       week.push(null);
@@ -74,21 +59,15 @@ function getCalendarGrid(year: number, month: number): (Date | null)[][] {
   return weeks;
 }
 
-// Define a fixed set of available time slots.
 const availableTimes = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
 
 const AppointmentSchedulerCalendarPage: React.FC<
   AppointmentSchedulerCalendarPageProps
 > = ({ onClose }) => {
   const today = new Date();
-
-  // State for current month and year
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth()); // 0-indexed
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-
-  // Re-calc calendar grid when month/year changes
   const calendarGrid = getCalendarGrid(currentYear, currentMonth);
-
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [clientName, setClientName] = useState("");
@@ -96,7 +75,6 @@ const AppointmentSchedulerCalendarPage: React.FC<
   const [message, setMessage] = useState("");
   const [isScheduling, setIsScheduling] = useState(false);
 
-  // Navigate to previous month
   const handlePreviousMonth = () => {
     if (currentMonth === 0) {
       setCurrentMonth(11);
@@ -107,7 +85,6 @@ const AppointmentSchedulerCalendarPage: React.FC<
     setSelectedDate(null);
   };
 
-  // Navigate to next month
   const handleNextMonth = () => {
     if (currentMonth === 11) {
       setCurrentMonth(0);
@@ -119,14 +96,12 @@ const AppointmentSchedulerCalendarPage: React.FC<
   };
 
   const handleSchedule = async () => {
-    // Log para depuração: exibe os valores atuais dos estados
     console.log("handleSchedule chamado", {
       selectedDate,
       selectedTime,
       clientName,
       clientPhone,
     });
-
     if (!selectedDate || !selectedTime) {
       setMessage("Selecione um dia e um horário para agendar.");
       return;
@@ -135,8 +110,6 @@ const AppointmentSchedulerCalendarPage: React.FC<
       setMessage("Preencha seu nome e telefone.");
       return;
     }
-
-    // Combine the selected day and time to create a datetime object.
     const [hours, minutes] = selectedTime.split(":");
     const appointmentDate = new Date(selectedDate);
     appointmentDate.setHours(parseInt(hours), parseInt(minutes));
@@ -162,8 +135,7 @@ const AppointmentSchedulerCalendarPage: React.FC<
   const weekDayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   return (
-    <div className="container mx-auto px-4 py-10 relative">
-      {/* Optional Close Button */}
+    <div className="container mx-auto px-2 py-6 relative">
       {onClose && (
         <button
           onClick={onClose}
@@ -173,44 +145,41 @@ const AppointmentSchedulerCalendarPage: React.FC<
           X
         </button>
       )}
-      {/* Header */}
-      <h1 className="text-4xl md:text-5xl font-extrabold mb-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500">
+      <h1 className="text-3xl sm:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500">
         Agendamento de Consulta
       </h1>
 
       {/* Calendar Section */}
-      <div className="bg-white rounded-3xl shadow-2xl p-6 mb-10 border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-white rounded-2xl shadow-md p-4 mb-6 border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
           <button
             onClick={handlePreviousMonth}
-            className="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+            className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
             title="Mês Anterior"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={20} />
           </button>
-          <span className="text-2xl font-semibold text-gray-800">
+          <span className="text-xl font-semibold text-gray-800">
             {monthNames[currentMonth]} {currentYear}
           </span>
           <button
             onClick={handleNextMonth}
-            className="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+            className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"
             title="Próximo Mês"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={20} />
           </button>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
+        <h2 className="text-lg font-semibold mb-3 text-center text-gray-700">
           Selecione um dia
         </h2>
-        {/* Week Day Header */}
-        <div className="grid grid-cols-7 text-center font-medium text-gray-500 mb-3 max-w-md mx-auto">
+        <div className="grid grid-cols-7 text-center font-medium text-xs sm:text-sm text-gray-500 mb-2">
           {weekDayLabels.map((day, index) => (
             <div key={index}>{day}</div>
           ))}
         </div>
-        {/* Calendar Grid */}
-        <div className="grid grid-cols-7 gap-2 max-w-md mx-auto">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {calendarGrid.map((week, weekIndex) =>
             week.map((day, dayIndex) => {
               const isToday =
@@ -223,7 +192,7 @@ const AppointmentSchedulerCalendarPage: React.FC<
                 <button
                   key={`${weekIndex}-${dayIndex}`}
                   onClick={() => day && setSelectedDate(day)}
-                  className={`h-10 w-10 rounded-full transition 
+                  className={`h-8 w-8 sm:h-10 sm:w-10 rounded-full transition 
                     ${day ? "hover:bg-blue-100" : "opacity-0 cursor-default"} 
                     ${isToday ? "border-2 border-green-500" : ""} 
                     ${isSelected ? "bg-blue-500 text-white" : "text-gray-800"}`}
@@ -239,16 +208,16 @@ const AppointmentSchedulerCalendarPage: React.FC<
 
       {/* Time Selection */}
       {selectedDate && (
-        <div className="bg-white rounded-3xl shadow-2xl p-6 mb-10 border border-gray-200">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">
+        <div className="bg-white rounded-2xl shadow-md p-4 mb-6 border border-gray-200">
+          <h2 className="text-lg font-semibold mb-3 text-gray-700">
             Selecione o horário
           </h2>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {availableTimes.map((time) => (
               <button
                 key={time}
                 onClick={() => setSelectedTime(time)}
-                className={`px-4 py-2 rounded-full border transition 
+                className={`px-3 py-1 rounded-full border transition 
                   ${
                     selectedTime === time
                       ? "bg-green-500 text-white border-green-500"
@@ -263,21 +232,21 @@ const AppointmentSchedulerCalendarPage: React.FC<
       )}
 
       {/* Patient Info Section */}
-      <div className="bg-white rounded-3xl shadow-2xl p-6 mb-10 border border-gray-200">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">
+      <div className="bg-white rounded-2xl shadow-md p-4 mb-6 border border-gray-200">
+        <h2 className="text-lg font-semibold mb-3 text-gray-700">
           Dados do Paciente
         </h2>
-        <div className="mb-5">
+        <div className="mb-4">
           <label className="block font-medium text-gray-600 mb-1">Nome:</label>
           <input
             type="text"
             value={clientName}
             onChange={(e) => setClientName(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm"
             placeholder="Seu nome"
           />
         </div>
-        <div className="mb-5">
+        <div className="mb-4">
           <label className="block font-medium text-gray-600 mb-1">
             Telefone:
           </label>
@@ -285,22 +254,21 @@ const AppointmentSchedulerCalendarPage: React.FC<
             type="tel"
             value={clientPhone}
             onChange={(e) => setClientPhone(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm"
             placeholder="Seu telefone"
           />
         </div>
         <button
           onClick={handleSchedule}
           disabled={isScheduling}
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium px-4 py-3 rounded-full hover:from-blue-600 hover:to-blue-700 transition disabled:opacity-70 shadow-lg"
+          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium px-3 py-2 rounded-full hover:from-blue-600 hover:to-blue-700 transition disabled:opacity-70 shadow-md text-sm"
         >
           {isScheduling ? "Agendando..." : "Agendar Consulta"}
         </button>
       </div>
 
-      {/* Display Message */}
       {message && (
-        <p className="text-center text-lg mt-4 text-gray-700">{message}</p>
+        <p className="text-center text-base mt-4 text-gray-700">{message}</p>
       )}
     </div>
   );

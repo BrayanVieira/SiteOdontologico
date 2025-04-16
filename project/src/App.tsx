@@ -8,6 +8,8 @@ import {
   Instagram,
   Facebook,
   MessageCircle,
+  Menu,
+  X,
 } from "lucide-react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Tooth from "./components/Tooth";
@@ -15,35 +17,43 @@ import AppointmentSchedulerCalendarPage from "./pages/AppointmentSchedulerCalend
 import ContactCard from "./components/ContactCard";
 
 function App() {
-  // State to handle popup modal visibility
+  // State para controlar visibilidade do agendamento (popup) e contato (card)
   const [showPopup, setShowPopup] = useState(false);
-  // State to handle contact card visibility
   const [showContact, setShowContact] = useState(false);
+  // State para controlar o menu mobile
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Opens the scheduler popup
+  // Abre o modal de agendamento
   const handleSchedule = () => {
     setShowPopup(true);
+    setMobileMenuOpen(false);
   };
 
-  // Closes the scheduler popup
+  // Fecha o modal de agendamento
   const closePopup = () => {
     setShowPopup(false);
   };
 
-  // Opens the contact card
+  // Abre o card de contato
   const handleContactOpen = () => {
     setShowContact(true);
+    setMobileMenuOpen(false);
   };
 
-  // Closes the contact card
+  // Fecha o card de contato
   const closeContact = () => {
     setShowContact(false);
+  };
+
+  // Alterna o menu mobile
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => !prev);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Navigation */}
-      <nav className="bg-gradient-to-r from-white to-gray-50 shadow-md fixed w-full z-10">
+      <nav className="bg-gradient-to-r from-white to-gray-50 shadow-md fixed w-full z-20">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
@@ -54,6 +64,7 @@ function App() {
                 Sorriso Perfeito
               </span>
             </div>
+            {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-8 text-lg">
               <a
                 href="#servicos"
@@ -80,13 +91,56 @@ function App() {
                 Agendar Consulta
               </button>
             </div>
+            {/* Mobile Navigation Toggle */}
+            <div className="md:hidden">
+              <button onClick={toggleMobileMenu} className="text-gray-800">
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
+        {/* Mobile Navigation Overlay */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white shadow-md">
+            <div className="px-4 pt-2 pb-4 space-y-2">
+              <a
+                href="#servicos"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-800 hover:text-primary-600 transition-colors text-lg"
+              >
+                Serviços
+              </a>
+              <a
+                href="#convenios"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-gray-800 hover:text-primary-600 transition-colors text-lg"
+              >
+                Convênios
+              </a>
+              <a
+                onClick={handleContactOpen}
+                className="block text-gray-800 hover:text-primary-600 transition-colors cursor-pointer text-lg"
+              >
+                Contato
+              </a>
+              <button
+                onClick={handleSchedule}
+                className="w-full bg-primary-500 text-white px-5 py-2 rounded-full hover:bg-primary-600 transition-all shadow-md"
+              >
+                Agendar Consulta
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
       <header
-        className="relative h-[70vh] bg-cover bg-center pt-20 transition-all duration-500 filter hover:brightness-110 hover:contrast-125"
+        className="relative h-[70vh] bg-cover bg-center pt-20 transition-all duration-500 hover:brightness-110 hover:contrast-125"
         style={{
           backgroundImage: "url('/assets/consultorio.jpg')",
         }}
@@ -94,17 +148,17 @@ function App() {
         <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm" />
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="text-white max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
               Clínica Odontológica Sorriso Perfeito
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-neutral-200">
+            <p className="text-lg sm:text-xl md:text-2xl mb-8 text-neutral-200">
               Cuidando do seu sorriso com excelência e dedicação
             </p>
             <button
               onClick={handleSchedule}
-              className="bg-primary-500 text-white px-8 py-3 rounded-full hover:bg-primary-600 transition inline-flex items-center gap-2 shadow-lg"
+              className="bg-primary-500 text-white px-6 py-2 rounded-full hover:bg-primary-600 transition inline-flex items-center gap-2 shadow-lg"
             >
-              <Calendar className="w-6 h-6" />
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
               Agendar Consulta
             </button>
           </div>
@@ -114,10 +168,10 @@ function App() {
       {/* Services Section */}
       <section id="servicos" className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">
             Nossos Serviços
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {[
               {
                 title: "Clínica Geral",
@@ -161,10 +215,10 @@ function App() {
       {/* Insurance Plans Section */}
       <section id="convenios" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">
             Convênios Aceitos
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {[
               "Amil Dental",
               "Bradesco Dental",
@@ -180,7 +234,7 @@ function App() {
                 className="flex items-center gap-2 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all"
               >
                 <Shield className="w-6 h-6 text-primary-500" />
-                <span className="text-gray-800 text-lg">{plan}</span>
+                <span className="text-gray-800 text-base">{plan}</span>
               </div>
             ))}
           </div>
@@ -311,7 +365,7 @@ function App() {
         </div>
       </footer>
 
-      {/* Popup Modal for Appointment Scheduler */}
+      {/* Popup Modal para Agendamento */}
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-900 bg-opacity-60">
           <div className="relative bg-white rounded-2xl shadow-2xl w-11/12 max-w-3xl max-h-full overflow-auto p-8 transform transition-all duration-300">
@@ -327,7 +381,7 @@ function App() {
         </div>
       )}
 
-      {/* Popup Card for Contact */}
+      {/* Card Popup para Contato */}
       {showContact && <ContactCard onClose={closeContact} />}
     </div>
   );
