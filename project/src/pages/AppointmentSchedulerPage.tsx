@@ -35,57 +35,74 @@ const AppointmentSchedulerPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Agendamento de Consulta</h1>
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-        <div>
-          <label htmlFor="dateTime" className="block font-medium">
-            Data e Hora:
-          </label>
-          <input
-            id="dateTime"
-            type="datetime-local"
-            value={dateTime}
-            onChange={(e) => setDateTime(e.target.value)}
-            className="mt-1 border p-2 w-full rounded"
-            required
-          />
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-md mx-auto bg-white p-10 rounded-3xl shadow-2xl border border-gray-200">
+          <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
+            Agendamento de Consulta
+          </h1>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="dateTime"
+                className="block font-medium text-gray-700"
+              >
+                Data e Hora:
+              </label>
+              <input
+                id="dateTime"
+                type="datetime-local"
+                value={dateTime}
+                onChange={(e) => setDateTime(e.target.value)}
+                className="mt-2 border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 transition"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="clientName"
+                className="block font-medium text-gray-700"
+              >
+                Nome:
+              </label>
+              <input
+                id="clientName"
+                type="text"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                className="mt-2 border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 transition"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="clientPhone"
+                className="block font-medium text-gray-700"
+              >
+                Telefone:
+              </label>
+              <input
+                id="clientPhone"
+                type="tel"
+                value={clientPhone}
+                onChange={(e) => setClientPhone(e.target.value)}
+                className="mt-2 border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 transition"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isScheduling}
+              className="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium px-4 py-3 rounded-full hover:from-primary-600 hover:to-primary-700 transition disabled:opacity-70 shadow-lg"
+            >
+              {isScheduling ? "Agendando..." : "Agendar Consulta"}
+            </button>
+          </form>
+          {message && (
+            <p className="mt-8 text-center text-lg text-gray-700">{message}</p>
+          )}
         </div>
-        <div>
-          <label htmlFor="clientName" className="block font-medium">
-            Nome:
-          </label>
-          <input
-            id="clientName"
-            type="text"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            className="mt-1 border p-2 w-full rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="clientPhone" className="block font-medium">
-            Telefone:
-          </label>
-          <input
-            id="clientPhone"
-            type="tel"
-            value={clientPhone}
-            onChange={(e) => setClientPhone(e.target.value)}
-            className="mt-1 border p-2 w-full rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={isScheduling}
-          className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition disabled:opacity-70"
-        >
-          {isScheduling ? "Agendando..." : "Agendar Consulta"}
-        </button>
-      </form>
-      {message && <p className="mt-4 text-lg">{message}</p>}
+      </div>
     </div>
   );
 };
