@@ -21,10 +21,10 @@ const ContactCard: React.FC<ContactCardProps> = ({ onClose }) => {
         </h2>
         <div className="mb-8 space-y-4 text-gray-700 text-lg">
           <div>
-            <span className="font-semibold">Telefone:</span> (11) 3000-0000
+            <span className="font-semibold">Telefone:</span> (19) 98606-9178
           </div>
           <div>
-            <span className="font-semibold">Celular:</span> (11) 99000-0000
+            <span className="font-semibold">Celular:</span> (19) 98606-9178
           </div>
           <div>
             <span className="font-semibold">Endereço:</span> Av. Paulista, 1000
@@ -53,7 +53,7 @@ const ContactCard: React.FC<ContactCardProps> = ({ onClose }) => {
             <Facebook size={32} />
           </a>
           <a
-            href="https://wa.me/5511990000000"
+            href="https://wa.me/5519986069178"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-600 hover:text-green-700 transition"

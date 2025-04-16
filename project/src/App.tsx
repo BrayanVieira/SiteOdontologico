@@ -217,7 +217,7 @@ function App() {
                   <Facebook className="w-6 h-6" />
                 </a>
                 <a
-                  href="https://wa.me/5511990000000"
+                  href="https://wa.me/5519986069178"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition"
@@ -270,11 +270,11 @@ function App() {
               <div className="space-y-4 text-lg">
                 <div className="flex items-center gap-2">
                   <Phone className="w-5 h-5 text-primary-500" />
-                  <span className="text-gray-400">(11) 3000-0000</span>
+                  <span className="text-gray-400">(19) 98606-9178</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-5 h-5 text-primary-500" />
-                  <span className="text-gray-400">(11) 99000-0000</span>
+                  <span className="text-gray-400">(19) 98606-9178</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <MapPin className="w-5 h-5 text-primary-500 mt-1" />
@@ -320,8 +320,7 @@ function App() {
               className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full shadow-md focus:outline-none transition transform hover:scale-105"
               aria-label="Fechar"
             >
-              <span className="sr-only">Fechar</span>
-              X
+              <span className="sr-only">Fechar</span>X
             </button>
             <AppointmentSchedulerCalendarPage />
           </div>
